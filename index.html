@@ -8,166 +8,210 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-78VZWJ5B1W"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-78VZWJ5B1W');</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7039091592734005" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0f172a;color:#f1f5f9;min-height:100vh}nav{background:#1e293b;border-bottom:1px solid #334155;padding:14px 24px;display:flex;align-items:center;gap:16px}nav a{color:#94a3b8;text-decoration:none;font-size:14px}nav a:hover{color:#f1f5f9}nav .brand{color:#38bdf8;font-weight:700;font-size:18px}.ad-banner{background:#1e293b;border-bottom:1px solid #334155;padding:8px;text-align:center}</style>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0f172a;color:#f1f5f9;min-height:100vh}
+nav{background:#1e293b;border-bottom:1px solid #334155;padding:14px 24px;display:flex;align-items:center;gap:16px}
+nav a{color:#94a3b8;text-decoration:none;font-size:14px}nav a:hover{color:#f1f5f9}
+nav .brand{color:#38bdf8;font-weight:700;font-size:18px}
+.ad-banner{background:#1e293b;border-bottom:1px solid #334155;padding:8px;text-align:center}
+#app{max-width:500px;margin:40px auto;padding:0 20px}
+h1{font-size:28px;font-weight:700;text-align:center;margin-bottom:8px}
+.subtitle{text-align:center;color:#94a3b8;margin-bottom:28px}
+.card{background:#1e293b;border-radius:20px;padding:28px 24px;border:1px solid #334155;margin-bottom:16px}
+#clock-svg{display:block;margin:0 auto 16px}
+#digital{font-family:monospace;font-size:44px;font-weight:300;text-align:center;letter-spacing:2px;color:#f1f5f9}
+#date-str{text-align:center;font-size:14px;color:#64748b;margin-top:4px}
+#ringing-banner{background:#ef4444;border-radius:14px;padding:18px;text-align:center;margin-bottom:16px;display:none}
+#ringing-banner h2{font-size:22px;font-weight:700;margin-bottom:10px}
+#dismiss-btn{background:#fff;color:#ef4444;border:none;border-radius:10px;padding:9px 26px;font-size:15px;font-weight:700;cursor:pointer}
+.add-card{background:#1e293b;border-radius:16px;padding:18px;border:1px solid #334155;margin-bottom:16px}
+.add-card h2{font-size:15px;font-weight:600;margin-bottom:14px}
+.add-row{display:flex;gap:8px;flex-wrap:wrap}
+.add-row input[type=time]{flex:1;min-width:110px;background:#0f172a;color:#f1f5f9;border:1px solid #334155;border-radius:8px;padding:9px;font-size:17px}
+.add-row input[type=text]{flex:2;min-width:120px;background:#0f172a;color:#f1f5f9;border:1px solid #334155;border-radius:8px;padding:9px;font-size:14px}
+.add-row input::placeholder{color:#475569}
+.add-btn{background:#38bdf8;color:#0f172a;border:none;border-radius:8px;padding:9px 18px;font-size:14px;font-weight:700;cursor:pointer}
+.alarms-card{background:#1e293b;border-radius:16px;border:1px solid #334155;overflow:hidden;display:none}
+.alarms-header{padding:13px 18px;border-bottom:1px solid #334155;font-size:13px;color:#64748b;font-weight:600}
+.alarm-row{padding:13px 18px;border-bottom:1px solid #0f172a;display:flex;justify-content:space-between;align-items:center}
+.alarm-time{font-family:monospace;font-size:22px;font-weight:300}
+.alarm-label{font-size:13px;color:#64748b;margin-top:2px}
+.alarm-actions{display:flex;gap:10px;align-items:center}
+.toggle{width:42px;height:24px;border-radius:12px;position:relative;cursor:pointer;border:none;transition:background .2s}
+.toggle-knob{width:18px;height:18px;background:#fff;border-radius:50%;position:absolute;top:3px;transition:left .2s}
+.remove-btn{background:none;border:none;color:#475569;cursor:pointer;font-size:18px;padding:0 2px}
+.remove-btn:hover{color:#ef4444}
+</style>
 </head>
 <body>
 <nav><span class="brand">⚡ Tabutility</span><a href="https://tabutility.com">← All Tools</a></nav>
 <div class="ad-banner"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7039091592734005" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
-<div id="root"></div>
-<script type="text/babel">
-//<![CDATA[
-const { useState, useEffect, useRef } = React;
+<div id="app">
+  <h1>Online Alarm Clock</h1>
+  <p class="subtitle">Set alarms in your browser — no app, no install</p>
+  <div id="ringing-banner">
+    <div style="font-size:28px;margin-bottom:6px">🔔</div>
+    <h2>ALARM!</h2>
+    <button id="dismiss-btn" onclick="dismissAlarm()">Dismiss</button>
+  </div>
+  <div class="card">
+    <svg id="clock-svg" width="200" height="200" viewBox="0 0 200 200">
+      <circle cx="100" cy="100" r="92" fill="#0f172a" stroke="#334155" stroke-width="2"/>
+      <g id="tick-marks"></g>
+      <line id="hour-hand" x1="100" y1="100" x2="100" y2="55" stroke="#f1f5f9" stroke-width="5" stroke-linecap="round"/>
+      <line id="min-hand"  x1="100" y1="100" x2="100" y2="35" stroke="#f1f5f9" stroke-width="3" stroke-linecap="round"/>
+      <line id="sec-hand"  x1="100" y1="100" x2="100" y2="28" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="100" cy="100" r="4" fill="#38bdf8"/>
+    </svg>
+    <div id="digital">00:00:00</div>
+    <div id="date-str"></div>
+  </div>
+  <div class="add-card">
+    <h2>Set Alarm</h2>
+    <div class="add-row">
+      <input type="time" id="alarm-time-inp"/>
+      <input type="text" id="alarm-label-inp" placeholder="Label (optional)"/>
+      <button class="add-btn" onclick="addAlarm()">Add</button>
+    </div>
+  </div>
+  <div class="alarms-card" id="alarms-card">
+    <div class="alarms-header">ALARMS</div>
+    <div id="alarms-list"></div>
+  </div>
+</div>
+<script>
+var alarms = [];
+var nextAlarmId = 1;
+var audioCtx = null;
+var ringInterval = null;
+var ringing = false;
 
-function pad(n) { return String(n).padStart(2,'0'); }
+function pad2(n){ return String(n).padStart(2,'0'); }
+function getCtx(){ if(!audioCtx) audioCtx=new AudioContext(); return audioCtx; }
 
-function playAlarmSound(ctx) {
-  let t = ctx.currentTime;
-  for (let i = 0; i < 8; i++) {
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
-    o.connect(g); g.connect(ctx.destination);
-    o.frequency.value = i % 2 === 0 ? 880 : 1100;
-    g.gain.setValueAtTime(0.5, t);
-    g.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
-    o.start(t); o.stop(t + 0.25);
-    t += 0.3;
+function playRing() {
+  try {
+    var ctx=getCtx(); var t=ctx.currentTime;
+    for(var i=0;i<8;i++){
+      var o=ctx.createOscillator(); var g=ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.frequency.value=i%2===0?880:1100;
+      g.gain.setValueAtTime(0.5,t); g.gain.exponentialRampToValueAtTime(0.001,t+0.25);
+      o.start(t); o.stop(t+0.25); t+=0.3;
+    }
+  } catch(e){}
+}
+
+// Draw tick marks
+(function(){
+  var g=document.getElementById('tick-marks');
+  for(var i=0;i<12;i++){
+    var a=(i*30-90)*Math.PI/180;
+    var line=document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1',String(100+78*Math.cos(a)));
+    line.setAttribute('y1',String(100+78*Math.sin(a)));
+    line.setAttribute('x2',String(100+88*Math.cos(a)));
+    line.setAttribute('y2',String(100+88*Math.sin(a)));
+    line.setAttribute('stroke','#475569'); line.setAttribute('stroke-width','2');
+    g.appendChild(line);
+  }
+})();
+
+function handPos(cx,cy,len,deg) {
+  var r=(deg-90)*Math.PI/180;
+  return { x: cx+len*Math.cos(r), y: cy+len*Math.sin(r) };
+}
+
+function updateClock() {
+  var now=new Date();
+  var h=now.getHours(),m=now.getMinutes(),s=now.getSeconds();
+  document.getElementById('digital').textContent=pad2(h)+':'+pad2(m)+':'+pad2(s);
+  document.getElementById('date-str').textContent=now.toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  var hDeg=(h%12)*30+m*0.5;
+  var mDeg=m*6+s*0.1;
+  var sDeg=s*6;
+  function setHand(id,len,deg){
+    var p=handPos(100,100,len,deg);
+    var el=document.getElementById(id);
+    el.setAttribute('x2',String(p.x)); el.setAttribute('y2',String(p.y));
+  }
+  setHand('hour-hand',45,hDeg);
+  setHand('min-hand',65,mDeg);
+  setHand('sec-hand',72,sDeg);
+
+  // Check alarms
+  if(!ringing && s===0) {
+    var timeStr=pad2(h)+':'+pad2(m);
+    alarms.forEach(function(a){
+      if(a.active && a.time===timeStr) {
+        a.active=false;
+        ringing=true;
+        document.getElementById('ringing-banner').style.display='block';
+        playRing();
+        ringInterval=setInterval(playRing,2600);
+        renderAlarms();
+      }
+    });
   }
 }
 
-export default function AlarmClock() {
-  const [now, setNow] = useState(new Date());
-  const [alarmTime, setAlarmTime] = useState('');
-  const [alarmSet, setAlarmSet] = useState(false);
-  const [ringing, setRinging] = useState(false);
-  const [alarms, setAlarms] = useState([]);
-  const [label, setLabel] = useState('');
-  const audioRef = useRef(null);
-  const ringInterval = useRef(null);
-
-  const getCtx = () => { if (!audioRef.current) audioRef.current = new AudioContext(); return audioRef.current; };
-
-  useEffect(() => {
-    const tick = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(tick);
-  }, []);
-
-  useEffect(() => {
-    if (alarms.length === 0) return;
-    const check = setInterval(() => {
-      const n = new Date();
-      const timeStr = `${pad(n.getHours())}:${pad(n.getMinutes())}`;
-      const secs = n.getSeconds();
-      if (secs === 0) {
-        const triggered = alarms.find(a => a.active && a.time === timeStr);
-        if (triggered) {
-          setRinging(true);
-          try { playAlarmSound(getCtx()); } catch(e) {}
-          ringInterval.current = setInterval(() => {
-            try { playAlarmSound(getCtx()); } catch(e) {}
-          }, 2600);
-          setAlarms(prev => prev.map(a => a.id === triggered.id ? {...a, active: false} : a));
-        }
-      }
-    }, 1000);
-    return () => clearInterval(check);
-  }, [alarms]);
-
-  const dismiss = () => {
-    setRinging(false);
-    clearInterval(ringInterval.current);
-  };
-
-  const addAlarm = () => {
-    if (!alarmTime) return;
-    setAlarms(prev => [...prev, { id: Date.now(), time: alarmTime, label: label || 'Alarm', active: true }]);
-    setAlarmTime(''); setLabel('');
-  };
-
-  const removeAlarm = (id) => setAlarms(prev => prev.filter(a => a.id !== id));
-  const toggleAlarm = (id) => setAlarms(prev => prev.map(a => a.id === id ? {...a, active: !a.active} : a));
-
-  const h = now.getHours(); const m = now.getMinutes(); const s = now.getSeconds();
-  const deg = (h % 12) * 30 + m * 0.5;
-  const mdeg = m * 6 + s * 0.1;
-  const sdeg = s * 6;
-
-  return (
-    <div style={{maxWidth:520,margin:'40px auto',padding:'0 20px'}}>
-      <h1 style={{textAlign:'center',fontSize:28,fontWeight:700,marginBottom:8}}>Online Alarm Clock</h1>
-      <p style={{textAlign:'center',color:'#94a3b8',marginBottom:32}}>Set alarms in your browser — no app, no install</p>
-
-      {ringing && (
-        <div style={{background:'#ef4444',borderRadius:16,padding:20,textAlign:'center',marginBottom:24,animation:'pulse 0.5s infinite alternate'}}>
-          <div style={{fontSize:32,marginBottom:8}}>🔔</div>
-          <div style={{fontSize:20,fontWeight:700,marginBottom:12}}>ALARM!</div>
-          <button onClick={dismiss} style={{background:'#fff',color:'#ef4444',border:'none',borderRadius:10,padding:'10px 28px',fontSize:16,fontWeight:700,cursor:'pointer'}}>Dismiss</button>
-        </div>
-      )}
-
-      <div style={{background:'#1e293b',borderRadius:20,padding:'32px 24px',textAlign:'center',border:'1px solid #334155',marginBottom:24}}>
-        <svg width="220" height="220" style={{display:'block',margin:'0 auto 20px'}}>
-          <circle cx="110" cy="110" r="100" fill="#0f172a" stroke="#334155" strokeWidth="2"/>
-          {[...Array(12)].map((_,i) => {
-            const a = (i * 30 - 90) * Math.PI / 180;
-            return <line key={i} x1={110+85*Math.cos(a)} y1={110+85*Math.sin(a)} x2={110+95*Math.cos(a)} y2={110+95*Math.sin(a)} stroke="#475569" strokeWidth="2"/>;
-          })}
-          {/* Hour hand */}
-          <line x1="110" y1="110" x2={110+55*Math.cos((deg-90)*Math.PI/180)} y2={110+55*Math.sin((deg-90)*Math.PI/180)} stroke="#f1f5f9" strokeWidth="5" strokeLinecap="round"/>
-          {/* Minute hand */}
-          <line x1="110" y1="110" x2={110+75*Math.cos((mdeg-90)*Math.PI/180)} y2={110+75*Math.sin((mdeg-90)*Math.PI/180)} stroke="#f1f5f9" strokeWidth="3" strokeLinecap="round"/>
-          {/* Second hand */}
-          <line x1="110" y1="110" x2={110+80*Math.cos((sdeg-90)*Math.PI/180)} y2={110+80*Math.sin((sdeg-90)*Math.PI/180)} stroke="#38bdf8" strokeWidth="1.5" strokeLinecap="round"/>
-          <circle cx="110" cy="110" r="4" fill="#38bdf8"/>
-        </svg>
-        <div style={{fontFamily:'monospace',fontSize:48,fontWeight:300,letterSpacing:2,color:'#f1f5f9'}}>
-          {pad(h)}:{pad(m)}:{pad(s)}
-        </div>
-        <div style={{color:'#64748b',fontSize:14,marginTop:4}}>
-          {now.toLocaleDateString('en-GB', {weekday:'long',year:'numeric',month:'long',day:'numeric'})}
-        </div>
-      </div>
-
-      <div style={{background:'#1e293b',borderRadius:16,padding:20,border:'1px solid #334155',marginBottom:16}}>
-        <h2 style={{fontSize:16,fontWeight:600,marginBottom:16}}>Set Alarm</h2>
-        <div style={{display:'flex',gap:10,flexWrap:'wrap'}}>
-          <input type="time" value={alarmTime} onChange={e => setAlarmTime(e.target.value)}
-            style={{flex:1,minWidth:120,background:'#0f172a',color:'#f1f5f9',border:'1px solid #334155',borderRadius:8,padding:'10px',fontSize:18}}/>
-          <input placeholder="Label (optional)" value={label} onChange={e=>setLabel(e.target.value)}
-            style={{flex:2,minWidth:140,background:'#0f172a',color:'#f1f5f9',border:'1px solid #334155',borderRadius:8,padding:'10px',fontSize:14}}/>
-          <button onClick={addAlarm} style={{background:'#38bdf8',color:'#0f172a',border:'none',borderRadius:8,padding:'10px 20px',fontSize:15,fontWeight:700,cursor:'pointer'}}>Add Alarm</button>
-        </div>
-      </div>
-
-      {alarms.length > 0 && (
-        <div style={{background:'#1e293b',borderRadius:16,border:'1px solid #334155',overflow:'hidden'}}>
-          <div style={{padding:'14px 20px',borderBottom:'1px solid #334155',fontSize:13,color:'#64748b',fontWeight:600}}>ALARMS</div>
-          {alarms.map(a => (
-            <div key={a.id} style={{padding:'14px 20px',borderBottom:'1px solid #1e293b',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-              <div>
-                <div style={{fontFamily:'monospace',fontSize:24,fontWeight:300,color:a.active?'#f1f5f9':'#475569'}}>{a.time}</div>
-                <div style={{fontSize:13,color:'#64748b'}}>{a.label}</div>
-              </div>
-              <div style={{display:'flex',gap:10,alignItems:'center'}}>
-                <label style={{display:'flex',alignItems:'center',gap:6,cursor:'pointer'}}>
-                  <div onClick={() => toggleAlarm(a.id)} style={{width:44,height:24,background:a.active?'#38bdf8':'#334155',borderRadius:12,position:'relative',transition:'background 0.2s',cursor:'pointer'}}>
-                    <div style={{width:18,height:18,background:'#fff',borderRadius:9,position:'absolute',top:3,left:a.active?23:3,transition:'left 0.2s'}}/>
-                  </div>
-                </label>
-                <button onClick={() => removeAlarm(a.id)} style={{background:'none',border:'none',color:'#ef4444',fontSize:18,cursor:'pointer'}}>✕</button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+function dismissAlarm() {
+  ringing=false;
+  clearInterval(ringInterval);
+  document.getElementById('ringing-banner').style.display='none';
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<AlarmClock />);
-//]]>
+function addAlarm() {
+  var t=document.getElementById('alarm-time-inp').value;
+  var l=document.getElementById('alarm-label-inp').value.trim()||'Alarm';
+  if(!t) return;
+  alarms.push({id:nextAlarmId++,time:t,label:l,active:true});
+  document.getElementById('alarm-time-inp').value='';
+  document.getElementById('alarm-label-inp').value='';
+  renderAlarms();
+}
+
+function toggleAlarm(id) {
+  alarms=alarms.map(function(a){ return a.id===id?Object.assign({},a,{active:!a.active}):a; });
+  renderAlarms();
+}
+function removeAlarm(id) {
+  alarms=alarms.filter(function(a){ return a.id!==id; });
+  renderAlarms();
+}
+
+function renderAlarms() {
+  var card=document.getElementById('alarms-card');
+  var list=document.getElementById('alarms-list');
+  if(!alarms.length){ card.style.display='none'; return; }
+  card.style.display='block';
+  list.innerHTML='';
+  alarms.forEach(function(a){
+    var row=document.createElement('div'); row.className='alarm-row';
+    var info=document.createElement('div');
+    var timeEl=document.createElement('div'); timeEl.className='alarm-time';
+    timeEl.textContent=a.time; timeEl.style.color=a.active?'#f1f5f9':'#475569';
+    var lblEl=document.createElement('div'); lblEl.className='alarm-label';
+    lblEl.textContent=a.label;
+    info.appendChild(timeEl); info.appendChild(lblEl);
+    var actions=document.createElement('div'); actions.className='alarm-actions';
+    var tog=document.createElement('button'); tog.className='toggle';
+    tog.style.background=a.active?'#38bdf8':'#334155';
+    var knob=document.createElement('div'); knob.className='toggle-knob';
+    knob.style.left=a.active?'21px':'3px';
+    tog.appendChild(knob);
+    tog.onclick=(function(id){ return function(){ toggleAlarm(id); }; })(a.id);
+    var rm=document.createElement('button'); rm.className='remove-btn'; rm.textContent='✕';
+    rm.onclick=(function(id){ return function(){ removeAlarm(id); }; })(a.id);
+    actions.appendChild(tog); actions.appendChild(rm);
+    row.appendChild(info); row.appendChild(actions);
+    list.appendChild(row);
+  });
+}
+
+setInterval(updateClock,1000);
+updateClock();
 </script>
 </body>
 </html>
