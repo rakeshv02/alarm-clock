@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://alarm-clock.tabutility.com/sitemap.xml
